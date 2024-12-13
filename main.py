@@ -10,8 +10,7 @@ class Item:
     def buy(self):
         """ Reduces the inventory quantity by one"""
         quantity = df.loc[df["id"] == self.item_id, "in stock"].squeeze()
-        quantity = quantity - 1
-        df.loc[df["id"] == self.item_id, "in stock"] = quantity
+        df.loc[df["id"] == self.item_id, "in stock"] = quantity - 1
         df.to_csv("inventory.csv", index=False)
 
     def available(self):
