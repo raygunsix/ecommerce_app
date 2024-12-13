@@ -1,6 +1,8 @@
 import pandas as pd
 from fpdf import FPDF
 
+df = pd.read_csv("inventory.csv")
+
 class Item:
     def __init__(self, item_id):
         self.item_id = int(item_id)
@@ -36,13 +38,13 @@ class Receipt:
 
         pdf.output("receipt.pdf")
 
-df = pd.read_csv("inventory.csv")
+
 print(df)
 
 purchased_item = input("Choose an item to buy: ")
 item = Item(purchased_item)
 item.buy()
 
-name, price = df.loc[df["id"] == 100, ["name", "price"]].squeeze()
+name, price = df.loc[df["id"] == purchased_item, ["name", "price"]].squeeze()
 receipt = Receipt(purchased_item, name, price)
 receipt.generate()
