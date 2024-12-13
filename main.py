@@ -14,6 +14,15 @@ class Item:
         df.loc[df["id"] == self.item_id, "in stock"] = quantity
         df.to_csv("inventory.csv", index=False)
 
+    def available(self):
+        """ Checks to see if an item is in stock """
+        in_stock = df.loc[df["id"] == self.item_id, "in stock"].squeeze()
+        if in_stock > 0:
+            return True
+        else:
+            return False
+    
+
 class Receipt:
     def __init__(self, item_id, item_name, item_price):
         self.item_id = str(item_id)
@@ -43,8 +52,11 @@ print(df)
 
 purchased_item = input("Choose an item to buy: ")
 item = Item(purchased_item)
-item.buy()
 
-name, price = df.loc[df["id"] == purchased_item, ["name", "price"]].squeeze()
-receipt = Receipt(purchased_item, name, price)
-receipt.generate()
+if item.available():
+    item.buy()
+    name, price = df.loc[df["id"] == int(purchased_item), ["name", "price"]].squeeze()
+    receipt = Receipt(purchased_item, name, price)
+    receipt.generate()
+else:
+    print("Sorry, that item is out of stock")
